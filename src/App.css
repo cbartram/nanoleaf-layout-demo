@@ -19,3 +19,24 @@
   line-height: 28px;
   color: #525f7f;
 }
+
+.right {
+  text-align: right;
+}
+
+.center {
+  text-align: center;
+}
+
+.left {
+  text-align: left;
+}
+
+.shadow {
+  -webkit-box-shadow: -1px -1px 5px 0 rgba(26,26,67,.05), -12px 20px 125px -25px rgba(50,50,93,.5), -18px 20px 75px -37.5px rgba(0,0,0,.6);
+  box-shadow: -1px -1px 5px 0 rgba(26,26,67,.05), -12px 20px 125px -25px rgba(50,50,93,.5), -18px 20px 75px -37.5px rgba(0,0,0,.6);
+}
+
+.section-gray {
+  background-color: #f6f9fc;
+}

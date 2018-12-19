@@ -1,0 +1,11 @@
+#rocket-icon {
+    width: 120px;
+    margin-left: -11px;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+.flame {
+    will-change: transform;
+    transform-origin: 15px 37.5px;
+}
