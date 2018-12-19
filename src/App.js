@@ -1,92 +1,104 @@
 import React, { Component } from 'react';
 import './App.css';
 import NanoleafLayout from 'nanoleaf-layout/lib/NanoleafLayout';
+import Navbar from "./components/Navbar/Navbar";
+import Footer from "./components/Footer/Footer";
 
 class App extends Component {
   constructor() {
       super();
 
       this.state = {
-         nanoleafData: {
-             sideLength: 150,
-             numPanels: 2,
-             positionData: [
-                 {
-                     panelId: 107,
-                     x: -74,
-                     y: 43,
-                     o: 180
-                 },
-                 {
-                     panelId: 114,
-                     x: -149,
-                     y: 0,
-                     o: 360
-                 }
-             ]
-         }
+          nanoleafData: {
+              numPanels: 10,
+              sideLength: 150,
+              positionData: [{
+                  panelId: 1,
+                  x: 100,
+                  y: 100,
+                  o: 60,
+                  color: '#6772E5'
+              }, {
+                  panelId: 2,
+                  x: 324,
+                  y: 56,
+                  o: 0,
+                  color: '#6772E5'
+              }, {
+                  panelId: 3,
+                  x: 249,
+                  y: -159,
+                  o: 60,
+                  color: '#6772E5'
+              }, {
+                  panelId: 4,
+                  x: 174,
+                  y: 56,
+                  o: 240,
+                  color: '#6772E5'
+              }, {
+                  panelId: 5,
+                  x: 324,
+                  y: -29,
+                  o: 60,
+                  color: '#6772E5'
+              }, {
+                  panelId: 7,
+                  x: 399,
+                  y: 99,
+                  o: 300,
+                  color: '#6772E5'
+              }, {
+                  panelId: 8,
+                  x: 174,
+                  y: -29,
+                  o: 60,
+                  color: '#6772E5'
+              }, {
+                  panelId: 10,
+                  x: 249,
+                  y: -73,
+                  o: 240,
+                  color: '#6772E5'
+              }]
+          }
       }
   };
   render() {
     return (
-      <div>
-          <div className="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm fixed">
-              <h5 className="my-0 mr-md-auto font-weight-normal">Nanoleaf Layout</h5>
-              <nav className="my-2 my-md-0 mr-md-3">
-                  <a className="p-2 text-dark" href="#about">About</a>
-                  <a className="p-2 text-dark" href="#examples">Examples</a>
-                  <a className="p-2 text-dark" href="#support">Support</a>
-                  <a className="p-2 text-dark" href="#github">Github</a>
-                  <a className="p-2 text-dark" href="#">Sponsor</a>
-              </nav>
-          </div>
+      <div className="container-fluid">
+          <Navbar/>
           <div className="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-              <h1 className="display-4" id="about">Nanoleaf Layout</h1>
-              <p className="lead">Quickly show a visual representation of the physical nanoleaf layout for your users!</p>
-
+              <h1 className="display-4">Nanoleaf Layout</h1>
+              <p className="lead">Instantly show a real time visual representation of a physical Nanoleaf structure on the web.</p>
               <div className="row">
-                  <div className="col-md-3 offset-md-3">
-                    <NanoleafLayout data={this.state.nanoleafData} />
+                  <div className="d-flex justify-content-center">
+                     <div className="nanoleaf-container-md">
+                        <NanoleafLayout
+                            data={this.state.nanoleafData}
+                            onClick={data => console.log('Clicked!', data)}
+                            onHover={data => console.log('Hover', data)}
+                            onExit={data => console.log('Exited Hover', data)}
+                        />
+                     </div>
+                  </div>
+              </div>
+              {/* About Section */}
+              <div className="row">
+                  <div className="col-md-5">
+                      <h1 className="display-5" id="about">About</h1>
+                      <p className="common-body-text">
+                          Stripe builds the most powerful and flexible tools for internet commerce. Whether you’re
+                          creating a subscription service, an on-demand marketplace, an e-commerce store, or a
+                          crowdfunding platform, Stripe’s meticulously designed APIs and unmatched functionality help
+                          you create the best possible product for your users. Millions of the world’s most innovative
+                          technology companies are scaling faster and more efficiently by building their businesses on
+                          Stripe.
+                      </p>
                   </div>
               </div>
           </div>
-          <footer className="pt-4 my-md-5 pt-md-5 border-top">
-              <div className="row">
-                  <div className="col-12 col-md">
-                      <img className="mb-2" src="../../assets/brand/bootstrap-solid.svg" alt="" width="24" height="24" />
-                          <small className="d-block mb-3 text-muted">© 2017-2018</small>
-                  </div>
-                  <div className="col-6 col-md">
-                      <h5>Features</h5>
-                      <ul className="list-unstyled text-small">
-                          <li><a className="text-muted" href="#">Cool stuff</a></li>
-                          <li><a className="text-muted" href="#">Random feature</a></li>
-                          <li><a className="text-muted" href="#">Team feature</a></li>
-                          <li><a className="text-muted" href="#">Stuff for developers</a></li>
-                          <li><a className="text-muted" href="#">Another one</a></li>
-                          <li><a className="text-muted" href="#">Last time</a></li>
-                      </ul>
-                  </div>
-                  <div className="col-6 col-md">
-                      <h5>Resources</h5>
-                      <ul className="list-unstyled text-small">
-                          <li><a className="text-muted" href="#">Resource</a></li>
-                          <li><a className="text-muted" href="#">Resource name</a></li>
-                          <li><a className="text-muted" href="#">Another resource</a></li>
-                          <li><a className="text-muted" href="#">Final resource</a></li>
-                      </ul>
-                  </div>
-                  <div className="col-6 col-md">
-                      <h5>About</h5>
-                      <ul className="list-unstyled text-small">
-                          <li><a className="text-muted" href="#">Team</a></li>
-                          <li><a className="text-muted" href="#">Locations</a></li>
-                          <li><a className="text-muted" href="#">Privacy</a></li>
-                          <li><a className="text-muted" href="#">Terms</a></li>
-                      </ul>
-                  </div>
-              </div>
-          </footer>
+          <Footer/>
       </div>
     );
   }
