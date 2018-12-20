@@ -103,8 +103,8 @@ code .token.function, code .token.url {
 
 
 .common-Button--default {
-  color: #fff;
-  background: #6772e5;
+  color: #fff!important;
+  background: #6772e5 !important;
 }
 
 .common-Button--default:hover {

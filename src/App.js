@@ -268,16 +268,17 @@ export default class App extends Component {
               <h1 className="display-4">Nanoleaf Layout</h1>
               <p className="lead">Instantly show a real time visual representation of a physical Nanoleaf structure on the web.</p>
               <div className="row">
-                  <div className="d-flex justify-content-center">
-                     <div className="nanoleaf-container-md">
-                        <NanoleafLayout
-                            style={{ display: 'block', margin: 'auto'}}
-                            data={this.state.data.panelSize['8']}
-                            onClick={data => console.log('Clicked!', data)}
-                            onHover={data => console.log('Hover', data)}
-                            onExit={data => console.log('Exited Hover', data)}
-                        />
-                     </div>
+                  <div className="col-md-4 offset-md-4">
+                      <div className="d-flex justify-content-center">
+                         <div className="nanoleaf-container-md">
+                            <NanoleafLayout
+                                data={this.state.data.panelSize['8']}
+                                onClick={data => console.log('Clicked!', data)}
+                                onHover={data => console.log('Hover', data)}
+                                onExit={data => console.log('Exited Hover', data)}
+                            />
+                         </div>
+                      </div>
                   </div>
               </div>
           </div>
@@ -320,7 +321,7 @@ export default class App extends Component {
                   </div>
               </div>
               {/* Example */}
-              <div className="row">
+              <div className="row" id="examples">
                   <div className="col-md-2 offset-md-2 pt-4">
                       <div className="nanoleaf-container-md">
                         <NanoleafLayout data={this.state.data.panelSize[2]}/>
