@@ -32,6 +32,7 @@ export default class RocketSVG extends Component {
 
     render() {
     return (
+        <div className="d-flex justify-content-center">
         <svg id="rocket-icon" viewBox="0 0 75 75">
             <circle r="0.8427646435858045" cx="72.93964103630971" cy="25.388473334258148" fill="#AAB7C4"
                     fillOpacity="0.03321566147217462" />
@@ -79,6 +80,7 @@ export default class RocketSVG extends Component {
             <path fill="#8DDEF9" d="M46 37.5h7a3.5 3.5 0 0 0-7 0z" />
             <path fill="#68D4F8" d="M21 37.5c0-10.04-11 0-12 0 1 0 12 10.04 12 0z" className="flame" style={{ transform: this.state.flameRotation }} />
         </svg>
+        </div>
     )
-}
+  }
 }

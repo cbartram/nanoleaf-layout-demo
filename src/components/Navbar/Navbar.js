@@ -13,9 +13,9 @@ export default class Navbar extends Component {
               <nav className="my-2 my-md-0 mr-md-3">
                   <a className="p-2 text-dark" href="#about">About</a>
                   <a className="p-2 text-dark" href="#examples">Examples</a>
-                  <a className="p-2 text-dark" href="#support">Support</a>
+                  <a className="p-2 text-dark" href="#sponsor">Sponsor</a>
                   <a className="p-2 text-dark" href="#github">Github</a>
-                  <a className="p-2 text-dark" href="#">Sponsor</a>
+                  <a className="p-2 text-dark" href="#support">Support</a>
               </nav>
           </div>
       )
