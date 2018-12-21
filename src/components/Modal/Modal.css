@@ -1,0 +1,59 @@
+/* Form CSS */
+.form-row {
+    display: flex;
+    flex-direction: row;
+    border-bottom: none;
+    /*padding: 4px 0;*/
+    max-width: 600px;
+    padding: 8px 13px 2px 17px;
+    -webkit-transition: opacity .2s ease-in,height .2s ease-out;
+    transition: opacity .2s ease-in,height .2s ease-out;
+}
+
+.form-row > label {
+    color: #424770;
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: normal;
+    line-height: 26px;
+    margin-right: 20px;
+    -ms-flex-item-align: center;
+    align-self: center;
+    -webkit-box-flex: 32%;
+    -ms-flex: 32%;
+    flex: 32%;
+    text-transform: none;
+}
+
+.form-row input, .form-row textarea {
+    background-image: url(https://stripe.com/img/v3/contact_sales/form/validation-error.svg);
+    background-repeat: no-repeat;
+    background-position-x: -5000px;
+    background-position-y: 9px;
+    background-size: 20px 20px;
+
+    background-color: #f6f9fc;
+    padding: 5px 20px 8px 13px;
+    -ms-flex: 68%;
+    flex: 68%;
+    width: auto;
+
+    display: block;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    color: #32325d;
+    font-family: Camphor,Open Sans,Segoe UI,sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 26px;
+    -webkit-transition: background-color .1s ease-in,color .1s ease-in;
+    transition: background-color .1s ease-in,color .1s ease-in;
+}
+
+.form-row input:focus ,.form-row textarea:focus {
+    -webkit-box-shadow: 0 0 0 1px #e4effa;
+    box-shadow: 0 0 0 1px #e4effa;
+    color: #8898aa!important;
+    background-color: white;
+}

@@ -5,7 +5,7 @@ import './Navbar.css';
 export default class Navbar extends Component {
   render() {
       return (
-          <div className="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm fixed">
+          <div className="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm fixed-top">
               <a className="navbar-brand" href="/">
                   <img src={Logo} width="30" height="30" alt="Triangle Logo" />
               </a>
@@ -14,7 +14,7 @@ export default class Navbar extends Component {
                   <a className="p-2 text-dark" href="#about">About</a>
                   <a className="p-2 text-dark" href="#examples">Examples</a>
                   <a className="p-2 text-dark" href="#sponsor">Sponsor</a>
-                  <a className="p-2 text-dark" href="#github">Github</a>
+                  <a className="p-2 text-dark" href="https://github.com/cbartram/nanoleaf-layout">Github</a>
                   <a className="p-2 text-dark" href="#support">Support</a>
               </nav>
           </div>
