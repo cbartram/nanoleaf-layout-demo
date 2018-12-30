@@ -57,3 +57,55 @@
     color: #8898aa!important;
     background-color: white;
 }
+
+
+/* Dropdown Select */
+.select-dropdown {
+    z-index: 1000;
+    background: #fff;
+    -webkit-box-shadow: 0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3);
+    box-shadow: 0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3);
+    width: calc(100% + 12px);
+    padding: 5px 5px 0;
+    border: 1px solid #e6ebf1;
+    border-radius: 4px;
+    -webkit-transition: opacity .08s ease-out,-webkit-transform .08s ease-out;
+    transition: opacity .08s ease-out,transform .08s ease-out;
+    opacity: 0;
+    -webkit-transform: rotateX(10deg) skewX(2deg);
+    transform: rotateX(10deg) skewX(2deg);
+    -webkit-transition-duration: .12s;
+    transition-duration: .12s;
+    -webkit-transition-delay: .1s;
+    transition-delay: .1s;
+    -webkit-transform-origin: 100% -50px;
+    transform-origin: 100% -50px;
+    pointer-events: none;
+}
+
+.select-results {
+    max-height: 215px;
+    overflow-y: auto;
+    position: relative;
+    padding: 0;
+    margin: 0 -5px;
+    -webkit-tap-highlight-color: transparent;
+    list-style: none;
+}
+
+.select-result {
+    border-bottom: 1px solid #e7ecf3;
+    padding: 8px 0 8px 12px;
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 26px;
+    color: #6b7c93;
+    cursor: pointer;
+}
+
+.select-result .highlighted {
+    background: #f2f7fc;
+    color: #32325d;
+    font-weight: 400;
+}
+

@@ -2,280 +2,44 @@ import React, { Component } from 'react';
 import './App.css';
 import NanoleafLayout from 'nanoleaf-layout/lib/NanoleafLayout';
 import NanoleafData from './resources/data/nanoleafData';
+import {
+    basicExample,
+    propsExample,
+    mappingExample,
+    colorExample,
+    eventExample
+} from './resources/data/codeExamples';
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import RocketSVG from "./components/RocketSVG/RocketSVG";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/styles/prism';
-
+import Modal from "./components/Modal/Modal";
 
 class App extends Component {
   constructor() {
       super();
 
       this.state = {
-          data: NanoleafData
+          data: NanoleafData,
+          currentRotationValue: [0.3, 0],
+          rotationData: 'rotateX(.18283rad) rotateY(.123819rad)' //{ X: [.3, -.1], Y: [-.6, 0]}
       }
   };
-  render() {
-      let codeString = `import NanoleafLayout from 'nanoleaf-layout/lib/NanoleafLayout';
-
-<NanoleafLayout 
-    data={{  
-       numPanels:2,
-       sideLength:150,
-       positionData:[  
-          {  
-             panelId:107,
-             x:-74,
-             y:43,
-             o:180
-          },
-          {  
-             panelId:114,
-             x:-149,
-             y:0,
-             o:360
-          }
-       ]
-    }} 
-/>`;
-
-      let colorExample = `import NanoleafLayout from 'nanoleaf-layout/lib/NanoleafLayout';
-
-<NanoleafLayout
-    data={{
-          numPanels: 10,
-          sideLength: 150,
-          positionData: [{
-              panelId: 1,
-              x: 100,
-              y: 100,
-              o: 0,
-              color: '#408af8',
-              strokeColor: '#00ff00'
-          }, {
-              panelId: 2,
-              x: 25,
-              y: -29,
-              o: 240,
-              color: 'blue',
-              strokeColor: '#00ff00'
-          }, {
-              panelId: 3,
-              x: 174,
-              y: -29,
-              o: 120,
-              color: '#3ecf8e',
-              strokeColor: '#00ff00'
-          }, {
-              panelId: 4,
-              x: 99,
-              y: 13,
-              o: 180,
-              color: '#d7fafc'
-          }, {
-              panelId: 5,
-              x: 99,
-              y: -159,
-              o: 0,
-              color: '#6B7C93'
-          }, {
-              panelId: 6,
-              x: 25,
-              y: -116,
-              o: 60,
-              color: '#6772e5'
-          }]
-      }}
-/>`;
-
-      let mappingExample = `let { positionData } = await (await fetch(...)).json();
-      positionData = positionData.map(panel => ({ 
-          ...panel, 
-          color: '<YOUR_DESIRED_COLOR>', 
-          strokeColor: '#ACFF01'
-      }));`;
-
-      let propsExample = `import NanoleafLayout from 'nanoleaf-layout/lib/NanoleafLayout';
-
-<NanoleafLayout
-    strokeWidth={10} 
-     // Shows transformations and rotations
-    development={true}
-    // Style the enclosing SVG with a drop shadow
-    svgStyle={{
-        color: '#6b7c93',
-        boxShadow: '0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3)',
-        borderRadius: 8,
-    }}
-    data={{
-            numPanels: 10,
-            sideLength: 150,
-            positionData: [{  
-               panelId:1,
-               x:100,
-               y:100,
-               o:60
-            }, {  
-               panelId:2,
-               x:324,
-               y:56,
-               o:0
-            }, {  
-               panelId:3,
-               x:249,
-               y:-159,
-               o:60
-            }, {  
-               panelId:4,
-               x:174,
-               y:56,
-               o:240
-            }, {  
-               panelId:5,
-               x:324,
-               y:-29,
-               o:60
-            }, {  
-               panelId:6,
-               x:-49,
-               y:100,
-               o:60
-            },{  
-               panelId:7,
-               x:399,
-               y:99,
-               o:300
-            }, {  
-               panelId:8,
-               x:174,
-               y:-29,
-               o:60
-            }, {  
-               panelId:9,
-               x:25,
-               y:56,
-               o:120
-            }, {  
-               panelId:10,
-               x:249,
-               y:-73,
-               o:240
-            }]
-        }}
-/>`;
-
-      let eventExample = `import NanoleafLayout from "nanoleaf-layout/lib/nanoleaf-layout";
-import React, { Component } from 'react';
-
-let data = {
-    numPanels: 10,
-    sideLength: 150,
-    positionData: [{
-        panelId: 1,
-        x: 100,
-        y: 100,
-        o: 0,
-        color: '#3ECF8E'
-    }, {
-        panelId: 2,
-        x: 25,
-        y: -29,
-        o: 240,
-        color: '#3ECF8E'
-    }, {
-        panelId: 3,
-        x: 174,
-        y: -29,
-        o: 120,
-        color: '#3ECF8E'
-    }, {
-        panelId: 4,
-        x: 99,
-        y: 13,
-        o: 180,
-        color: '#3ECF8E'
-    }]
-};
-
-export default class App extends Component {
-  constructor() {
-    super();
-    this.state = { data }
-  }
-  
-  render() {
-    return (
-      <NanoleafLayout
-        data={data}
-        onClick={({ panelId }) => {
-            panelId === 4 ? 
-            alert('Panel 4 has been clicked!') : 
-            alert('Wrong Panel Clicked Try Clicking #4');
-        }}
-        onExit={() => {
-            let { positionData } = this.state.data;
-
-            // Convert all panels back to green
-            let panelToChange = positionData
-                .map(panel => {
-                    return {
-                        ...panel,
-                        color: '#3ECF8E'
-                    }
-            });
-            positionData = [...panelToChange];
-            this.setState({
-                data: {
-                    panelSize
-                }
-            });
-              }}
-          onHover={({ panelId }) => {
-            let { positionData } = this.state.data;
-
-            // A Single Panel being hovered over
-            let panelToChange = positionData
-                .filter(panel => panel.panelId === panelId)[0];
-                
-            // All the other panels    
-            let otherPanels = positionData
-                .filter(panel => panel.panelId !== panelId)
-                .map(panel => {
-                    // Set all other panels to green
-                    return {
-                        ...panel,
-                        color: '#3ECF8E'
-                    }
-                });
-                
-            // Update the hovered panel to blue   
-            panelToChange.color = '#70e6ff';
-            positionData = [...otherPanels, panelToChange];
-            
-            // Update our applications state!
-            this.setState({ positionData })
-      />
-    );
-  }
-}`;
-
+    render() {
     return (
       <div className="container-fluid">
+          <Modal/>
           <Navbar/>
           <div className="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center" id="getting-started">
               <h1 className="display-4">Nanoleaf Layout</h1>
               <p className="lead">Instantly show a real time visual representation of a physical Nanoleaf structure on the web.</p>
-              <div className="row">
-                  <div className="col-md-4 offset-md-4">
-                      <div className="d-flex justify-content-center">
+              <div className="row d-flex justify-content-center align-items-center">
+                  <div className="col-md-4">
+                      <div className="d-flex justify-content-center align-items-center">
                          <div className="nanoleaf-container-md">
                             <NanoleafLayout
                                 data={this.state.data.panelSize['8']}
-                                onClick={data => console.log('Clicked!', data)}
-                                onHover={data => console.log('Hover', data)}
-                                onExit={data => console.log('Exited Hover', data)}
                             />
                          </div>
                       </div>
@@ -350,7 +114,7 @@ export default class App extends Component {
                           showLineNumbers
                           startingLineNumber={1}
                       >
-                          {codeString}
+                          {basicExample}
                       </SyntaxHighlighter>
                   </div>
               </div>
@@ -573,8 +337,28 @@ export default class App extends Component {
                   </SyntaxHighlighter>
               </div>
           </div>
+          {/* Donate Section */}
+          <div className="row section-dark-blue" id="sponsor">
+              <div className="col-md-5 offset-md-3 py-3">
+                  <div className="d-flex flex-column justify-content-center align-items-center">
+                      <svg width="80" height="80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                          <circle cx="24" cy="24" r="24" fill="#87bbfd" />
+                          <path d="M31 9H5.27A24 24 0 0 0 .53 29H17l-2-4a6 6 0 1 1 6-6l12 2V11a2 2 0 0 0-2-2z" fill="#555abf" />
+                          <path d="M43.76 19H17a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h22.19a2 2 0 0 0 1.5-.67 21.92 21.92 0 0 0 5.06-17.62A2 2 0 0 0 43.76 19zM33 35a6 6 0 1 1 6-6 6 6 0 0 1-6 6z" fill="#fff" />
+                      </svg>
+                      <h1 className="display-5 title-dark center">Become a Backer</h1>
+                      <p className="common-body-text text-dark-bg center">
+                          Do you Find Nanoleaf Layout helpful or use it at work? Become a backer and support Nanoleaf
+                          layout with a with a one time or monthly donation.
+                      </p>
+                      <button className="common-Button common-Button--default m-3"  data-toggle="modal" data-target="#payment-modal">
+                          Become a Backer <span className="fas fa-credit-card" />
+                      </button>
+                  </div>
+              </div>
+          </div>
           {/* Support Section */}
-          <div className="row section-gray pl-5" id="support">
+          <div className="row section-gray pl-5 d-flex align-items-center" id="support">
               <div className="col-md-4 offset-md-2">
                   <h1 className="title">
                     <span className="subtitle">
@@ -584,10 +368,8 @@ export default class App extends Component {
                   </h1>
               </div>
               <div className="col-md-4">
-                  <div className="d-flex flex-row justify-content-space-between align-items-center">
-                      <a className="common-Button common-Button--default m-3">Contact Us <span className="fas fa-phone" /></a>
-                      <a href="https://github.com/cbartram/nanoleaf-layout/issues" className="common-Button m-3">Submit a Bug <span className="fab fa-github" /></a>
-                  </div>
+                  <a href="mailto:cbartram3@gmail.com" className="common-Button common-Button--default m-3">Contact Us <span className="fas fa-phone" /></a>
+                  <a href="https://github.com/cbartram/nanoleaf-layout/issues" className="common-Button m-3">Submit a Bug <span className="fab fa-github" /></a>
               </div>
           </div>
           <Footer/>

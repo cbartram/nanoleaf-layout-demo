@@ -4,6 +4,7 @@
  */
 .container-fluid {
   padding: 0;
+  margin-top: 50px; /* Used for the navbar fixed */
 }
 
 .nanoleaf-container-md {
@@ -36,6 +37,21 @@
   background-color: #f6f9fc;
 }
 
+.section-dark-blue {
+  background: #313554 linear-gradient(192deg,#313554,#3b3c60);
+}
+
+.title-dark {
+ color: white; /* Must be white for a dark background! */
+}
+
+.text-dark-bg {
+  color: white;
+}
+
+h1 {
+  color: #32325d;
+}
 
 /* Code Styles */
 code .token.keyword {
@@ -95,6 +111,7 @@ code .token.function, code .token.url {
   transform: translateY(-1px);
   -webkit-transition: all .15s ease;
   transition: all .15s ease;
+  text-decoration: none;
   -webkit-box-shadow: 0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3);
   box-shadow: 0 13px 27px -5px rgba(50,50,93,.25), 0 8px 16px -8px rgba(0,0,0,.3);
   -webkit-box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
@@ -113,6 +130,7 @@ code .token.function, code .token.url {
   transform: translateY(-1px);
   -webkit-transition: all .15s ease;
   transition: all .15s ease;
+  text-decoration: none;
   -webkit-box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
   box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
 }
