@@ -110,3 +110,20 @@
 .hidden {
     display: none;
 }
+
+.missing-value {
+    color: #ffa27b;
+    background-image: url(https://stripe.com/img/v3/contact_sales/form/validation-error.svg);
+    background-repeat: no-repeat;
+    background-position-x: calc(100% - 16px) !important;
+    background-position-y: 9px;
+    background-size: 20px 20px;
+    -webkit-box-shadow: 0 0 0 1px #ffa27b;
+    box-shadow: 0 0 0 1px #ffa27b;
+    border: 1px solid #ffa27b;
+    background-color: transparent !important;
+}
+
+.missing-value::placeholder {
+    color: #ffa27b;
+}

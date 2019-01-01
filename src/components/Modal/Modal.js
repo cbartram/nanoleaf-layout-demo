@@ -15,6 +15,13 @@ export default class Modal extends Component {
                 creditCard: '',
                 expirationMonth: '',
                 expirationYear: '',
+                cvc: '',
+            },
+            missingValues: {
+                firstName: false,
+                lastName: false,
+                creditCard: false,
+                cvc: false,
             }
         }
     }
@@ -56,8 +63,20 @@ export default class Modal extends Component {
         });
     };
 
-    handleFieldBlur = () => {
+    /**
+     * Handles showing a warning or error if the field is not filled correctly
+     * @param fieldName String name of the field corresponding to
+     */
+    handleFieldBlur = (fieldName) => {
       console.log('Blurred');
+      if(this.state.fields[fieldName].length === 0) {
+          this.setState({
+              missingValues: {
+                  ...this.state.missingValues,
+                  [fieldName]: true,
+              }
+          })
+      }
     };
 
     render() {
@@ -75,33 +94,35 @@ export default class Modal extends Component {
                             <div className="form-row text firstname">
                                 <label className="firstname" htmlFor="firstname">Your first name</label>
                                 <input
-                                    onBlur={() => this.handleFieldBlur()}
+                                    onBlur={() => this.handleFieldBlur('firstName')}
                                     onChange={(e) => this.updateField('firstName', e)}
                                     value={this.state.fields.firstName}
                                     id="firstname"
                                     name="firstname"
                                     type="text"
                                     placeholder="Jürgen"
+                                    className={`${this.state.missingValues['firstName'] ? 'missing-value' : ''}`}
                                     required
                                 />
                             </div>
                             <div className="form-row text lastname">
                                 <label className="lastname" htmlFor="lastname">Your last name</label>
                                 <input
-                                    onBlur={() => this.handleFieldBlur()}
+                                    onBlur={() => this.handleFieldBlur('lastName')}
                                     onChange={(e) => this.updateField('lastName', e)}
                                     value={this.state.fields.lastName}
                                     id="lastname"
                                     name="lastname"
                                     type="text"
                                     placeholder="Windcaller"
+                                    className={`${this.state.missingValues['lastName'] ? 'missing-value' : ''}`}
                                     required
                                 />
                             </div>
                             <div className="form-row text cc">
                                 <label className="cc" htmlFor="cc">Credit Card Number</label>
                                 <input
-                                    onBlur={() => this.handleFieldBlur()}
+                                    onBlur={() => this.handleFieldBlur('creditCard')}
                                     onChange={(e) => this.updateField('creditCard', e)}
                                     value={this.state.fields.creditCard}
                                     pattern="[0-9]*"
@@ -109,6 +130,7 @@ export default class Modal extends Component {
                                     name="cc"
                                     type="text"
                                     placeholder="4444 4444 4444 4444"
+                                    className={`${this.state.missingValues['creditCard'] ? 'missing-value' : ''}`}
                                     required
                                 />
                             </div>
@@ -199,12 +221,23 @@ export default class Modal extends Component {
                             </div>
                             <div className="form-row text security">
                                 <label className="security" htmlFor="security">CCV Security Code</label>
-                                <input id="security" name="security" type="text" placeholder="123" required="" />
+                                <input
+                                    id="security"
+                                    name="security"
+                                    type="text"
+                                    placeholder="123"
+                                    required
+                                    onBlur={() => this.handleFieldBlur('cvc')}
+                                    onChange={(e) => this.updateField('cvc', e)}
+                                    value={this.state.fields.cvc}
+                                    pattern="[0-9]*"
+                                    className={`${this.state.missingValues['cvc'] ? 'missing-value' : ''}`}
+                                />
                             </div>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="common-Button" data-dismiss="modal">Close</button>
-                            <button type="button" className="common-Button common-Button--default">Place Order</button>
+                            <button type="button" className="common-Button common-Button--default" onClick={() => alert('This feature is not yet implemented try again later!')}>Place Order</button>
                         </div>
                     </div>
                 </div>
