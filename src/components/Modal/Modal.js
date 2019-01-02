@@ -9,6 +9,9 @@ export default class Modal extends Component {
         this.state = {
             visible: false, // Is the dropdown for the expiration year visible?
             monthVisible: false, // Is the dropdown for the expiration month visible?
+            error: null, // Was there an error processing payment?
+            success: false, // Was the request successful?
+            loading: false, // If the request is processing we don't want users to accidentally submit duplicate payments
             fields: {
                 firstName: '',
                 lastName: '',
@@ -16,6 +19,7 @@ export default class Modal extends Component {
                 expirationMonth: '',
                 expirationYear: '',
                 cvc: '',
+                amount: 0,
             },
             missingValues: {
                 firstName: false,
@@ -27,8 +31,13 @@ export default class Modal extends Component {
     }
 
     updateField = (fieldName, e) => {
-        const value = e.target.value;
+        let value = e.target.value;
         const valid = e.target.validity.valid || value.length === 0;
+
+        // Convert $ -> ¢
+        if(fieldName === 'amount')
+            value = (+value * 100);
+
         this.setState({
             fields: {
                 ...this.state.fields,
@@ -68,7 +77,6 @@ export default class Modal extends Component {
      * @param fieldName String name of the field corresponding to
      */
     handleFieldBlur = (fieldName) => {
-      console.log('Blurred');
       if(this.state.fields[fieldName].length === 0) {
           this.setState({
               missingValues: {
@@ -77,6 +85,56 @@ export default class Modal extends Component {
               }
           })
       }
+    };
+
+    /**
+     * Handles updating the state to reflect the selected amount the user wishes to donate
+     * @param amount Integer amount of money in ¢ the users wishes to donate
+     */
+    handleAmountSelection = (amount) => {
+        this.setState({
+            fields: {
+                ...this.state.fields,
+                amount,
+            }
+        });
+    };
+
+    /**
+     * Handles making the POST request containing the CC details to the backend
+     */
+    checkout = async () => {
+        console.log('[INFO] Attempting to process card information');
+        const { creditCard, firstName, lastName, cvc, expirationMonth, expirationYear, amount } = this.state.fields;
+        // TODO Validate Fields
+        const params = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                number: creditCard,
+                exp_month: expirationMonth,
+                exp_year: expirationYear,
+                cvc: cvc,
+                name: `${firstName} ${lastName}`,
+                amount
+            })
+        };
+
+        try {
+            let response = await (await fetch('https://e7pdt8qmt1.execute-api.us-east-1.amazonaws.com/Dev/charge/create', params)).json();
+            console.log(response);
+
+            if(response.errorMessage)
+                this.setState({ error: response.errorMessage });
+            else
+                this.setState({ success: true });
+        } catch(err) {
+            console.log(err);
+            this.setState({ error: err.message });
+        }
     };
 
     render() {
@@ -91,6 +149,54 @@ export default class Modal extends Component {
                             </button>
                         </div>
                         <div className="modal-body">
+
+                            {
+                                this.state.error &&
+                                <div className="alert alert-danger" role="alert">
+                                    <h4 className="alert-heading">Error</h4>
+                                    <p>
+                                        Unfortunately something went wrong processing your payment information. Ensure your
+                                        card information is typed correctly and matches the details on your credit or debit card.
+                                    </p>
+                                    <hr />
+                                    <p>
+                                        You can try again by resubmitting the form below! Details of the error: &nbsp;
+                                        { this.state.error }
+                                    </p>
+                                </div>
+
+                                }
+
+                            {
+                                this.state.success &&
+                                <div className="alert alert-success" role="alert">
+                                    <h4 className="alert-heading">Thank You</h4>
+                                    <p>
+                                        Thank you for your generous donation to Nanoleaf Layout and helping to support the open source
+                                        community.
+                                    </p>
+                                    <hr />
+                                    <p>
+                                        We sincerely appreciate it!
+                                    </p>
+                                </div>
+                            }
+
+                            {/* Donation Amount Button Group */}
+                            <div className="btn-group ml-2" role="group" aria-label="First group">
+                                <button type="button" className={`common-Button ${this.state.fields.amount === 200 ? 'selected': '' }`} style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }} onClick={() => this.handleAmountSelection(200)}>$2.00</button>
+                                <button type="button" className={`common-Button ${this.state.fields.amount === 500 ? 'selected': '' }`} style={{ borderRadius: 0 }} onClick={() => this.handleAmountSelection(500)}>$5.00</button>
+                                <button type="button" className={`common-Button ${this.state.fields.amount === 1000 ? 'selected': '' }`} style={{ borderRadius: 0 }} onClick={() => this.handleAmountSelection(1000)}>$10.00</button>
+                                <button type="button" className={`common-Button ${this.state.fields.amount === 2500 ? 'selected': '' }`} style={{ borderRadius: 0 }} onClick={() => this.handleAmountSelection(2500)}>$25.00</button>
+                                <button type="button" className={`common-Button ${this.state.fields.amount === 5000 ? 'selected': '' }`} style={{ borderRadius: 0 }} onClick={() => this.handleAmountSelection(5000)}>$50.00</button>
+                                <button type="button" className={`common-Button ${this.state.fields.amount === 10000 ? 'selected': '' }`} style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }} onClick={() => this.handleAmountSelection(10000)}>$100.00</button>
+                            </div>
+
+                            <div className="form-row text amount">
+                                <label className="amount" htmlFor="amount">Custom Amount ($)</label>
+                                <input type="number" name="amount" id="amount" onChange={(e) => this.updateField('amount', e)} step="1" min="2" className="form-control" />
+                            </div>
+
                             <div className="form-row text firstname">
                                 <label className="firstname" htmlFor="firstname">Your first name</label>
                                 <input
@@ -208,7 +314,7 @@ export default class Modal extends Component {
                                         {
                                             Array.apply(null, { length: 50 }).map(Number.call, Number)
                                                 .map(i => {
-                                                    let momentItem = moment().subtract(i, 'years').format('YYYY');
+                                                    let momentItem = moment().add(i, 'years').format('YYYY');
                                                     return (
                                                         <li className="select-result" key={i} onMouseDown={() => this.handleYearSelect(momentItem)}>
                                                             { momentItem }
@@ -237,7 +343,7 @@ export default class Modal extends Component {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="common-Button" data-dismiss="modal">Close</button>
-                            <button type="button" className="common-Button common-Button--default" onClick={() => alert('This feature is not yet implemented try again later!')}>Place Order</button>
+                            <button type="button" className="common-Button common-Button--default" onClick={() => this.checkout()}>Place Order</button>
                         </div>
                     </div>
                 </div>
