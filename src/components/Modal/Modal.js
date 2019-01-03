@@ -144,9 +144,12 @@ export default class Modal extends Component {
             try {
                 let response = await (await fetch('https://e7pdt8qmt1.execute-api.us-east-1.amazonaws.com/Dev/charge/create', params)).json();
 
+                console.log(response);
                 // Something went wrong with the request
                 if(response.errorMessage)
                     this.setState({ error: response.errorMessage, success: false, loading: false });
+                else if(response.body.error)
+                    this.setState({ error: response.body.error.message, success: false, loading: false });
                 else
                 // Reset all the fields and show a success message
                     this.setState({
