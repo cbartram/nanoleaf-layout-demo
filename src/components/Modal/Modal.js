@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import './Modal.css';
+import Alert from "../Alert/Alert";
 
 export default class Modal extends Component {
     constructor(props) {
@@ -77,14 +78,14 @@ export default class Modal extends Component {
      * @param fieldName String name of the field corresponding to
      */
     handleFieldBlur = (fieldName) => {
-      if(this.state.fields[fieldName].length === 0) {
-          this.setState({
-              missingValues: {
-                  ...this.state.missingValues,
-                  [fieldName]: true,
-              }
-          })
-      }
+        if(this.state.fields[fieldName].length === 0) {
+            this.setState({
+                missingValues: {
+                    ...this.state.missingValues,
+                    [fieldName]: true,
+                }
+            })
+        }
     };
 
     /**
@@ -103,38 +104,76 @@ export default class Modal extends Component {
     /**
      * Handles making the POST request containing the CC details to the backend
      */
-    checkout = async () => {
-        console.log('[INFO] Attempting to process card information');
-        const { creditCard, firstName, lastName, cvc, expirationMonth, expirationYear, amount } = this.state.fields;
-        // TODO Validate Fields
-        const params = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                number: creditCard,
-                exp_month: expirationMonth,
-                exp_year: expirationYear,
-                cvc: cvc,
-                name: `${firstName} ${lastName}`,
+    checkout = () => {
+        this.setState({ loading: true }, async () => {
+            console.log('[INFO] Attempting to process card information');
+            const {
+                creditCard,
+                firstName,
+                lastName,
+                cvc,
+                expirationMonth,
+                expirationYear,
                 amount
-            })
-        };
+            } = this.state.fields;
+            // TODO Validate Fields
 
-        try {
-            let response = await (await fetch('https://e7pdt8qmt1.execute-api.us-east-1.amazonaws.com/Dev/charge/create', params)).json();
-            console.log(response);
+            // If any of the fields are blank do not submit the request
+            if(creditCard.length === 0 || firstName.length === 0 || amount < 200 || lastName.length === 0 || cvc.length === 0 || expirationMonth.length === 0 || expirationYear.length === 0) {
+                this.setState({ error: 'Some of the fields were left blank!', success: false, loading: false });
+                return;
+            }
 
-            if(response.errorMessage)
-                this.setState({ error: response.errorMessage });
-            else
-                this.setState({ success: true });
-        } catch(err) {
-            console.log(err);
-            this.setState({ error: err.message });
-        }
+
+            const params = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    number: creditCard,
+                    exp_month: expirationMonth,
+                    exp_year: expirationYear,
+                    cvc: cvc,
+                    name: `${firstName} ${lastName}`,
+                    amount
+                })
+            };
+
+            try {
+                let response = await (await fetch('https://e7pdt8qmt1.execute-api.us-east-1.amazonaws.com/Dev/charge/create', params)).json();
+
+                // Something went wrong with the request
+                if(response.errorMessage)
+                    this.setState({ error: response.errorMessage, success: false, loading: false });
+                else
+                // Reset all the fields and show a success message
+                    this.setState({
+                        success: true,
+                        loading: false,
+                        error: '',
+                        fields: {
+                            firstName: '',
+                            lastName: '',
+                            amount: 0,
+                            expirationYear: '',
+                            expirationMonth: '',
+                            creditCard: '',
+                            cvc: ''
+                        },
+                        missingValues: {
+                            firstName: false,
+                            lastName: false,
+                            creditCard: false,
+                            cvc: false,
+                        }
+                    });
+            } catch(err) {
+                console.log(err);
+                this.setState({ error: err.message, success: false, loading: false });
+            }
+        });
     };
 
     render() {
@@ -149,11 +188,10 @@ export default class Modal extends Component {
                             </button>
                         </div>
                         <div className="modal-body">
-
+                            {/* Show the error/success Alerts after the payment is submitted */}
                             {
                                 this.state.error &&
-                                <div className="alert alert-danger" role="alert">
-                                    <h4 className="alert-heading">Error</h4>
+                                <Alert type="danger" heading="Error">
                                     <p>
                                         Unfortunately something went wrong processing your payment information. Ensure your
                                         card information is typed correctly and matches the details on your credit or debit card.
@@ -163,14 +201,12 @@ export default class Modal extends Component {
                                         You can try again by resubmitting the form below! Details of the error: &nbsp;
                                         { this.state.error }
                                     </p>
-                                </div>
-
-                                }
+                                </Alert>
+                            }
 
                             {
                                 this.state.success &&
-                                <div className="alert alert-success" role="alert">
-                                    <h4 className="alert-heading">Thank You</h4>
+                                <Alert type="success" heading="Thank You">
                                     <p>
                                         Thank you for your generous donation to Nanoleaf Layout and helping to support the open source
                                         community.
@@ -179,7 +215,7 @@ export default class Modal extends Component {
                                     <p>
                                         We sincerely appreciate it!
                                     </p>
-                                </div>
+                                </Alert>
                             }
 
                             {/* Donation Amount Button Group */}
@@ -343,7 +379,10 @@ export default class Modal extends Component {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="common-Button" data-dismiss="modal">Close</button>
-                            <button type="button" className="common-Button common-Button--default" onClick={() => this.checkout()}>Place Order</button>
+                            {
+                                this.state.loading ? <button type="button" className="common-Button common-Button--default" disabled>Processing <i className="fas fa-circle-notch" /></button> :
+                                <button type="button" className="common-Button common-Button--default" onClick={() => this.checkout()}>Place Order</button>
+                            }
                         </div>
                     </div>
                 </div>
